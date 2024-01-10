@@ -8,12 +8,14 @@
 # include <unistd.h>
 # include <sys/time.h>
 
+
 typedef struct s_philo
 {
 	int id;
 	pthread_t philo_thread;
 	int time_of_last_meal;
 	int num_of_meals;
+	pthread_mutex_t *fork;
 }				t_philo;
 
 typedef struct s_data
@@ -30,14 +32,16 @@ typedef struct s_data
 
 //MAIN
 t_data 	*init_data(char **argv,struct timeval time);
-//PHILOS
+//PHILOS_INIT
 pthread_t	create_thread(void);
 void init_philos(t_data	*data);
+//ROUTINE
+void *routine(void *data);
 // UTILS
 int	check_args(int argc, char **argv);
 int	get_time_to_die(char **argv);
 // UTILS_FT
-
+void   ft_putstr_fd(char *s, int fd);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_bzero(void *s, size_t n);
 int	ft_atoi(const char *nptr);

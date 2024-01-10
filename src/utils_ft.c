@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 12:31:28 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/16 12:31:34 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/09 14:47:07 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,3 +62,15 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	ft_bzero(ptr, size * nmemb);
 	return (ptr);
 }
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		write((unsigned int)fd, &s[i], 1);
+		i++;
+	}
+}
+
