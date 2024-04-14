@@ -16,7 +16,6 @@ int main(int argc, char **argv)
 	return 0;
 }
 /*
-indexed thread cration now works, now to make them think and sleep, probably after joining thread check 
-time of day and call again ? 
+indexed thread cration now works, now to make them think and sleep, probably after joining thread check time of day and call again ? 
 procedure to make them think: 
 */

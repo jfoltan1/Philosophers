@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:07:15 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/09 16:21:54 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/14 12:37:16 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,7 @@ void *routine(void  *arg)
 	if (a % 2 == 0)
 		//even from left fork.
 		//easy to divide group 1 starts and then 2 etc..
-		{
-			while (i <= a)	
-			{
-				
-			}
-			
-		}
+		even_start(data);
 	else if ( a % 2 != 0)
 	{
 		//all start from sleeping
@@ -67,7 +61,7 @@ void init_philos(t_data	*data)
 		data -> philo[i]->philo_thread = create_thread();
 		pthread_create(&data -> philo[i] -> philo_thread,NULL, &routine, (void *)data);	//probably in routine ?
 		pthread_join(data -> philo[i] -> philo_thread, NULL); // probably in routine ? 
-		pthread_mutex_init(data -> philo[i] -> fork, NULL);
+		pthread_mutex_init(data -> philo[i] -> fork, NULL);\
 		i++;
 	}
 }
