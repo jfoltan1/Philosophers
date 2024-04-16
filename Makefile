@@ -6,7 +6,7 @@
 #    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/18 10:54:58 by jfoltan           #+#    #+#              #
-#    Updated: 2023/12/16 12:40:58 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/04/16 09:37:40 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,11 @@ SRCS_DIR = ./src/
 
 CFLAGS =  -Wall -Wextra -Werror -pthread -g
 
-SRCS =  $(SRCS_DIR)main.c $(SRCS_DIR)utils.c $(SRCS_DIR)philos.c $(SRCS_DIR)utils_ft.c
+SRCS =  $(SRCS_DIR)main.c \
+		$(SRCS_DIR)utils.c \
+		$(SRCS_DIR)philos.c \
+		$(SRCS_DIR)utils_ft.c \
+		$(SRCS_DIR)even.c
 
 all: $(NAME)
 

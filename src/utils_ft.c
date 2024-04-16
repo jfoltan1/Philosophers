@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 12:31:28 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/09 14:47:07 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/15 15:02:37 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,3 +74,51 @@ void	ft_putstr_fd(char *s, int fd)
 	}
 }
 
+static int	ft_isneg(long f)
+{
+	if (f < 0)
+		return (1);
+	return (0);
+}
+
+static	int	ft_len(long l)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isneg(l))
+	{
+		i++;
+		l = l * -1;
+	}
+	while (l >= 10)
+	{
+		l = l / 10;
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_itoa(int n)
+{
+	char	*ptr;
+	int		i;
+	long	f;
+
+	f = n;
+	i = ft_len(f);
+	if (f < 0)
+		f = f * -1;
+	ptr = (char *)malloc(sizeof(char) * i + 2);
+	if (!ptr)
+		return (NULL);
+	ptr[i + 1] = 0;
+	while (i >= 0)
+	{
+		ptr[i--] = f % 10 + '0';
+		f = f / 10;
+	}
+	if (n < 0)
+		ptr[0] = '-';
+	return (ptr);
+}

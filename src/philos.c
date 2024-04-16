@@ -6,12 +6,12 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:07:15 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/14 12:37:16 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/16 09:53:08 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-void *routine(void  *arg)
+/*void *routine(void  *arg)
 {
 	t_data *data;
 	int		a;
@@ -31,7 +31,7 @@ void *routine(void  *arg)
 		
 	}
 	
-	/*//t_data *d;
+	//t_data *d;
 	static int i = 0;
 
 	//d = (t_data *)data;
@@ -39,29 +39,35 @@ void *routine(void  *arg)
 	printf("Hello from thread %d\n", ((t_data *)data)->philo[i]->id); //bad
 	i++;
 	fflush(stdout);
-	return NULL;*/
 	return NULL;
-}
+	return NULL;
+}*/
 void init_philos(t_data	*data)
 {
 	int i;
 	int a;
 	t_philo **philo;
 	
-	philo = malloc(sizeof(t_philo **));
+	philo = malloc(data->num_of_philos * sizeof(t_philo *));
 	data->philo = philo;
 	
 	//imlement even and odd
-	i = 0;
+	i = 1;
 	a = data->num_of_philos;
 	while(i <= a)
 	{
 		data -> philo[i] = malloc(sizeof(t_philo));
+		data -> philo[i] -> fork = malloc(sizeof(pthread_mutex_t));
 		data -> philo[i]->id = i;
 		data -> philo[i]->philo_thread = create_thread();
+		pthread_mutex_init(data -> philo[i] -> fork, NULL);
+		i++;
+	}
+	i = 1;
+	while(i <= a)
+	{	
 		pthread_create(&data -> philo[i] -> philo_thread,NULL, &routine, (void *)data);	//probably in routine ?
 		pthread_join(data -> philo[i] -> philo_thread, NULL); // probably in routine ? 
-		pthread_mutex_init(data -> philo[i] -> fork, NULL);\
 		i++;
 	}
 }

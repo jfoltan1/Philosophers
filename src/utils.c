@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:55:59 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/16 13:03:44 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/16 10:39:32 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ t_data 	*init_data(char **argv,struct timeval time)
 	data->time_to_die = get_time_to_die(argv);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
-	if (argv[5])
-		data->num_of_times_each_philo_must_eat = ft_atoi(argv[5]);
-	else
+	//if (argv[5])
+		//data->num_of_times_each_philo_must_eat = ft_atoi(argv[5]);
+	//else
 		data->num_of_times_each_philo_must_eat = -1;
 	return data;
 }
@@ -89,4 +89,14 @@ int	check_args(int argc, char **argv)
 	}
 	fflush(stdout);
 	return 0;
+}
+char *state_to_string(t_state state)
+{
+	if (state == eating)
+		return "eating";
+	else if (state == sleeping)
+		return "sleeping";
+	else if (state == thinking)
+		return "thinking";
+	return "error";
 }
