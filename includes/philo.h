@@ -18,35 +18,42 @@ typedef enum e_state
 
 typedef struct s_philo
 {
-	int id;
 	pthread_t philo_thread;
+	int num_of_philos;
+	int id;
+	int time_to_die;
+	int time_to_eat;
+	int time_to_sleep;
+	size_t time_on_start;
+	int num_of_times_each_philo_must_eat;
 	int time_of_last_meal;
 	int num_of_meals;
 	t_state state;
-	pthread_mutex_t *fork;
+	int *dead;
+	pthread_mutex_t *l_fork;
+	pthread_mutex_t *r_fork;
+	pthread_mutex_t	*dead_lock;
+	pthread_mutex_t	*meal_lock;
+	pthread_mutex_t	*write_lock;
 }				t_philo;
 
 typedef struct s_data
 {
-	struct timeval time;
-	int time_on_start;
-	int num_of_philos;
-	int time_to_die;
-	int time_to_eat;
-	int time_to_sleep;
-	int num_of_times_each_philo_must_eat;
+	int dead;
+	size_t start_time;	
+	pthread_mutex_t	dead_lock;
+	pthread_mutex_t	meal_lock;
+	pthread_mutex_t	write_lock;
 	t_philo **philo;
 }				t_data;
 
 //MAIN
-t_data 	*init_data(char **argv,struct timeval time);
+t_data 	*init_data(char **argv);
 //PHILOS_INIT
 pthread_t	create_thread(void);
-void init_philos(t_data	*data);
+void init_philos(char **argv, t_data	*data);
 //ROUTINE
-void *routine(void *data);
-//EVEN
-void	even_start(t_data *data);
+void routine(void *data);
 // UTILS
 int	check_args(int argc, char **argv);
 int	get_time_to_die(char **argv);

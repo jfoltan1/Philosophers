@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:55:59 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/16 10:39:32 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/21 19:46:15 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,22 @@ int	get_time_to_die(char **argv)
 		time_to_die = (ft_atoi(argv[3]) * 2) + ft_atoi(argv[4]) + 10; //maybe will change
 	return time_to_die;
 }
-t_data 	*init_data(char **argv,struct timeval time)
+t_data 	*init_data(char **argv)
 {
 	t_data *data;
+	struct timeval time_on_start;
+
+	gettimeofday(&time_on_start, NULL);
 	
-	data = malloc(sizeof(t_data));
-	data->time = time;
-	data->time_on_start = gettimeofday(&time, NULL);
-	data->num_of_philos = ft_atoi(argv[1]);
-	data->time_to_die = get_time_to_die(argv);
-	data->time_to_eat = ft_atoi(argv[3]);
-	data->time_to_sleep = ft_atoi(argv[4]);
-	//if (argv[5])
-		//data->num_of_times_each_philo_must_eat = ft_atoi(argv[5]);
-	//else
-		data->num_of_times_each_philo_must_eat = -1;
+	data = (t_data *)ft_calloc(1, sizeof(t_data));
+	
+	pthread_mutex_init(&data->dead_lock, NULL);
+	pthread_mutex_init(&data->meal_lock, NULL);
+	pthread_mutex_init(&data->write_lock, NULL);
+	data->start_time = (size_t) (time_on_start.tv_sec * 1000 + time_on_start.tv_usec / 1000);
+	//data->start_time = 0;
+	data->dead = 0;
+	data->philo = (t_philo **)ft_calloc(ft_atoi(argv[1]), sizeof(t_philo *));
 	return data;
 }
 int	check_args(int argc, char **argv)
