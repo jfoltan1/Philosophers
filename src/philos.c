@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:07:15 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/21 19:51:03 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/22 12:40:33 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,37 @@ size_t get_time(void)
 	time = (size_t) (rn.tv_sec * 1000 + rn.tv_usec / 1000);
 	return time;
 }
-void routine(void *philo_ptr)
+int is_odd(t_philo *philo)
 {
-	 t_philo *philo = (t_philo *)philo_ptr;
-	printf("%ld routine\n", (get_time() - philo->time_on_start));
-	fflush(stdout);
+	if (philo->num_of_philos % 2 != 0)
+		return(1);
+	return(0);
+}
+void 	godricks_hat(void *philo_ptr)
+{
+	t_philo *philo;
+	philo = (t_philo *)philo;
+	if (is_odd(philo))
+	{
+			if (philo->id % 2 != 0)
+				routine(philo);	
+			else
+			{
+				usleep(philo->time_to_sleep * 1000);
+				routine(philo);
+			}
+	
+	}
+	else 
+	{ //not sure if this is currently good, have to think more. 
+		if (philo->id % 2 != 0)
+			routine(philo);
+		else 
+		{
+			usleep(philo->time_to_eat * 1000);
+			routine(philo);
+		}
+	}
 }
 void philosophise(t_data *data)
 {
@@ -44,7 +70,7 @@ void philosophise(t_data *data)
 
 	i = -1;
 	while (++i < data->philo[0]->num_of_philos)
-		pthread_create(&data->philo[i]->philo_thread, NULL, (void *)(routine), (void *)data->philo[i]);
+		pthread_create(&data->philo[i]->philo_thread, NULL, (void *)(godricks_hat), (void *)data->philo[i]);
 	
 }
 void init_philos(char **argv, t_data	*data)
