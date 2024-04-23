@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:08:57 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/21 19:54:36 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/23 16:32:00 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,13 @@ fixes:
 -philos should be named from 1 
 
 routine:
-threads now created. 
+threads now created.
 timestamp should work.
+basic messaging works 
+probably have to have a mutex for states ? 
 
-make the logic bby - whiteboard diagram. 
+
+ 
 
 test
 cleanup

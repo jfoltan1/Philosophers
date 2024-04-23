@@ -53,12 +53,13 @@ t_data 	*init_data(char **argv);
 pthread_t	create_thread(void);
 void init_philos(char **argv, t_data	*data);
 //ROUTINE
-void routine(void *data);
+void routine(t_philo *philo);
 // UTILS
 int	check_args(int argc, char **argv);
 int	get_time_to_die(char **argv);
 char *state_to_string(t_state state);
 // UTILS_FT
+int	ft_strcmp(const char *s1, const char *s2);
 char	*ft_itoa(int n);
 void   ft_putstr_fd(char *s, int fd);
 void	*ft_calloc(size_t nmemb, size_t size);

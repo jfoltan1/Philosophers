@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:07:15 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/22 12:40:33 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/23 16:32:13 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,76 @@ int is_odd(t_philo *philo)
 		return(1);
 	return(0);
 }
+void put_message(char *state,t_philo *philo)
+{
+	// increment number of meals
+	if (ft_strcmp(state, "sleeping"))
+		{
+			printf("%zu %d is %s\n", get_time() - philo->time_on_start, philo->id, state);
+			philo->state = sleeping;
+			usleep(philo->time_to_sleep * 1000);
+		}
+	if (ft_strcmp(state, "eating"))
+	{
+		printf("%zu %d is %s\n", get_time() - philo->time_on_start, philo->id, state);
+		philo->time_of_last_meal = get_time();
+		philo->state = eating;
+		usleep(philo->time_to_eat * 1000);
+	}
+	if (ft_strcmp(state, "thinking"))
+	{
+		printf("%zu %d is %s\n", get_time() - philo->time_on_start, philo->id, state);
+		philo->state = thinking;
+		usleep(1000);
+	}
+	if (ft_strcmp(state, "fork"))
+	{
+		printf("%zu %d has taken a %s\n", get_time() - philo->time_on_start, philo->id, state);
+	}
+	fflush(stdout);
+}
+void routine(t_philo *philo)
+{
+	while (1)
+	{
+		printf("I am philo number : %d\n", philo->id);
+		fflush(stdout);
+		pthread_mutex_lock(philo->l_fork);
+		put_message("fork", philo);
+		pthread_mutex_lock(philo->r_fork);
+		philo->time_of_last_meal = get_time();
+		put_message("eating", philo);
+		put_message("sleeping", philo);
+		pthread_mutex_unlock(philo->l_fork);
+		pthread_mutex_unlock(philo->r_fork);
+	}
+}
 void 	godricks_hat(void *philo_ptr)
 {
 	t_philo *philo;
-	philo = (t_philo *)philo;
+	
+	philo = (t_philo *)philo_ptr;
 	if (is_odd(philo))
 	{
+		//implement later
 			if (philo->id % 2 != 0)
 				routine(philo);	
 			else
 			{
+				put_message("sleeping", philo);
 				usleep(philo->time_to_sleep * 1000);
 				routine(philo);
 			}
 	
 	}
 	else 
-	{ //not sure if this is currently good, have to think more. 
+	{
 		if (philo->id % 2 != 0)
-			routine(philo);
-		else 
 		{
-			usleep(philo->time_to_eat * 1000);
-			routine(philo);
-		}
+			put_message("sleeping", philo);
+			usleep(philo->time_to_sleep * 1000);
+		}	
+		routine(philo);
 	}
 }
 void philosophise(t_data *data)

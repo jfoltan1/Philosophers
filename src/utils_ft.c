@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 12:31:28 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/15 15:02:37 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/23 15:44:13 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,4 +121,18 @@ char	*ft_itoa(int n)
 	if (n < 0)
 		ptr[0] = '-';
 	return (ptr);
+}
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while ((s1[i] || s2[i]))
+	{
+		if (s1[i] == s2[i])
+			i++;
+		else
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	}
+	return (0);
 }
