@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:55:59 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/21 19:46:15 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/27 14:19:30 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ t_data 	*init_data(char **argv)
 	pthread_mutex_init(&data->write_lock, NULL);
 	data->start_time = (size_t) (time_on_start.tv_sec * 1000 + time_on_start.tv_usec / 1000);
 	//data->start_time = 0;
-	data->dead = 0;
 	data->philo = (t_philo **)ft_calloc(ft_atoi(argv[1]), sizeof(t_philo *));
 	return data;
 }
@@ -90,14 +89,4 @@ int	check_args(int argc, char **argv)
 	}
 	fflush(stdout);
 	return 0;
-}
-char *state_to_string(t_state state)
-{
-	if (state == eating)
-		return "eating";
-	else if (state == sleeping)
-		return "sleeping";
-	else if (state == thinking)
-		return "thinking";
-	return "error";
 }

@@ -8,28 +8,28 @@
 # include <unistd.h>
 # include <sys/time.h>
 
-typedef enum e_state
-{
-	eating,
-	sleeping,
-	thinking,
-
-} t_state;
+/*
+		*1 is fork
+		*2 is dead
+		*3 is eating
+		*4 is sleeping
+		*5 is thinking
+	*/
 
 typedef struct s_philo
 {
 	pthread_t philo_thread;
 	int num_of_philos;
 	int id;
-	int time_to_die;
+	unsigned int time_to_die;
 	int time_to_eat;
+	int time_to_think;
 	int time_to_sleep;
 	size_t time_on_start;
 	int num_of_times_each_philo_must_eat;
-	int time_of_last_meal;
+	size_t time_of_last_meal;
 	int num_of_meals;
-	t_state state;
-	int *dead;
+	int state;
 	pthread_mutex_t *l_fork;
 	pthread_mutex_t *r_fork;
 	pthread_mutex_t	*dead_lock;
@@ -39,7 +39,7 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	int dead;
+	pthread_t anubis;
 	size_t start_time;	
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	meal_lock;
@@ -57,7 +57,6 @@ void routine(t_philo *philo);
 // UTILS
 int	check_args(int argc, char **argv);
 int	get_time_to_die(char **argv);
-char *state_to_string(t_state state);
 // UTILS_FT
 int	ft_strcmp(const char *s1, const char *s2);
 char	*ft_itoa(int n);

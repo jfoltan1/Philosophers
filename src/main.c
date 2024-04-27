@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:08:57 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/23 16:32:00 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/04/27 18:19:13 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void cleanup(t_data *data)
 	int i;
 	int num_of_philos;
 	
-	i = -1;
-	num_of_philos = data->philo[0]->num_of_philos;
+	i = 0;
+	num_of_philos = data->philo[1]->num_of_philos;
 	while (++i < num_of_philos)
 		pthread_join(data->philo[i]->philo_thread, NULL);
 	
@@ -56,13 +56,18 @@ uncomment number of suppers.
 https://medium.com/@ruinadd/philosophers-42-guide-the-dining-philosophers-problem-893a24bc0fe2
 TODO:
 fixes:
--philos should be named from 1 
+anubis doesnt check shit
+
 
 routine:
+Have to completely rewrite the whole routine, I have to have checks of rpicking up of forks.. ?, altough maybe code hangs if philo cant pick up a fork ? in that case just fix it.
+in any case, output is bad.
+
+
 threads now created.
 timestamp should work.
 basic messaging works 
-probably have to have a mutex for states ? 
+
 
 
  
