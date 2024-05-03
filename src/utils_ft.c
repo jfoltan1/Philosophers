@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 12:31:28 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/23 15:44:13 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/05/03 18:23:52 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,4 +135,32 @@ int	ft_strcmp(const char *s1, const char *s2)
 			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 	}
 	return (0);
+}
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+void	ft_putnbr_fd(int n, int fd)
+{
+	long	t;
+
+	t = n;
+	if (t == -2147483648)
+		write(fd, "-2147483648", 11);
+	else
+	{
+		if (t < 0)
+		{
+			ft_putchar_fd('-', fd);
+			t = t * -1;
+		}
+		if (t >= 10)
+		{
+			ft_putnbr_fd(t / 10, fd);
+			ft_putchar_fd((t % 10) + 48, fd);
+		}
+		if (t < 10)
+			ft_putchar_fd((char)(t + 48), fd);
+	}
 }

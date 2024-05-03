@@ -8,6 +8,13 @@
 # include <unistd.h>
 # include <sys/time.h>
 
+typedef enum e_time_code
+{
+	SECONDS,
+	MILLISECOND,
+	MICROSECOND,
+}		t_time_code;
+
 /*
 		*1 is fork
 		*2 is dead
@@ -56,6 +63,7 @@ void init_philos(char **argv, t_data	*data);
 void routine(t_philo *philo);
 // UTILS
 int	check_args(int argc, char **argv);
+long	gettime(int time_code);
 int	get_time_to_die(char **argv);
 // UTILS_FT
 int	ft_strcmp(const char *s1, const char *s2);
@@ -64,4 +72,6 @@ void   ft_putstr_fd(char *s, int fd);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_bzero(void *s, size_t n);
 int	ft_atoi(const char *nptr);
+void	ft_putnbr_fd(int n, int fd);
+void	ft_putchar_fd(char c, int fd);
 #endif

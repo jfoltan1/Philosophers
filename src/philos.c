@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:07:15 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/27 18:15:26 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/05/03 18:47:24 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,40 +50,41 @@ void put_message(int state,t_philo *philo)
 	// increment number of meals
 	if (state == 1)
 	{
-		printf("%zu %d has taken a fork\n", get_time() - philo->time_on_start, philo->id);
+		printf("%zu %d has taken a fork\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
 	}
 	if (state == 2)
 	{
 		philo->state = 2;
-		printf("%zu %d died\n", get_time() - philo->time_on_start, philo->id);
+		printf("%zu %d died\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
 		return;
 	}
 	if (state == 3)
 	{
 		philo->state = 3;
-		printf("%zu %d is eating\n", get_time() - philo->time_on_start, philo->id);
+		printf("%zu %d is eating\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
 		usleep(philo->time_to_eat * 1000);
-		philo->time_of_last_meal = get_time() - philo->time_on_start;
+		philo->time_of_last_meal = gettime(MILLISECOND) - philo->time_on_start;
+		printf("time of last meal : %ld\n", philo->time_of_last_meal);
 		pthread_mutex_unlock(philo->l_fork);
 		pthread_mutex_unlock(philo->r_fork);
 	}
 	if (state == 4)
 		{
 			philo->state = 4;
-			printf("%zu %d is sleeping\n", get_time() - philo->time_on_start, philo->id);
+			printf("%zu %d is sleeping\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
 			usleep(philo->time_to_sleep * 1000);
 		}
 	if (state == 5)
 	{
 		philo->state = 5;
-		printf("%zu %d is thinking\n", get_time() - philo->time_on_start, philo->id);
+		printf("%zu %d is thinking\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
 		usleep(1000);
 	}
 	fflush(stdout);
 }
 void routine(t_philo *philo)
 {
-	while (1)
+	while ()
 	{
 		fflush(stdout);
 		pthread_mutex_lock(philo->r_fork);
@@ -91,8 +92,10 @@ void routine(t_philo *philo)
 		pthread_mutex_lock(philo->l_fork);
 		put_message(1, philo);
 		put_message(3, philo);
-		put_message(4, philo);
-		put_message(5, philo);
+		if (philo->state == 3)
+			put_message(4, philo);
+		if (philo->state == 4)
+			put_message(5, philo);
 	}
 }
 void 	godricks_hat(void *philo_ptr)
@@ -128,20 +131,22 @@ void hello_darkness(void *data_ptr)
 	t_philo **philo_arr;
 	int i;
 	int num_of_philos;
-	i = 0;
-
+	unsigned int elapsed_time;
+	i = 1;
 	data = (t_data *)data_ptr;
 	philo_arr = data->philo;
 	num_of_philos = philo_arr[1]->num_of_philos;
-	while (++i < num_of_philos)
+	while (1)
 	{
-		if ((get_time() - philo_arr[i]->time_on_start - philo_arr[i]->time_of_last_meal) > philo_arr[i]->time_to_die)
+		elapsed_time = gettime(MILLISECOND)- philo_arr[i]->time_on_start;
+		if (elapsed_time > philo_arr[i]->time_to_die)
 		{
 			put_message(2, philo_arr[i]);
 			break;
 		}
-		if (i == num_of_philos)
-			i = 0;
+		i++;
+		if (i > num_of_philos)
+			i = 1;
 	}
 }
 void philosophise(t_data *data)

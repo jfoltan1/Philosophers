@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:55:59 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/04/27 14:19:30 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/05/03 16:04:21 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,20 @@ pthread_t	create_thread(void)
 	philo = 0;
 	
 	return philo;
+}
+long	gettime(int time_code)
+{
+	struct timeval	tv;
+
+	if (gettimeofday(&tv, NULL))
+		printf("Error: gettimeofday\n");
+	if (MILLISECOND == time_code)
+		return (tv.tv_sec * 1e3 + tv.tv_usec / 1e3);
+	else if (MICROSECOND == time_code)
+		return (tv.tv_sec * 1e6 + tv.tv_usec);
+	else if (SECONDS == time_code)
+		return (tv.tv_sec + tv.tv_usec / 1e6);
+	return (1337);
 }
 int	get_time_to_die(char **argv)
 {
@@ -31,16 +45,14 @@ int	get_time_to_die(char **argv)
 t_data 	*init_data(char **argv)
 {
 	t_data *data;
-	struct timeval time_on_start;
 
-	gettimeofday(&time_on_start, NULL);
 	
 	data = (t_data *)ft_calloc(1, sizeof(t_data));
 	
 	pthread_mutex_init(&data->dead_lock, NULL);
 	pthread_mutex_init(&data->meal_lock, NULL);
 	pthread_mutex_init(&data->write_lock, NULL);
-	data->start_time = (size_t) (time_on_start.tv_sec * 1000 + time_on_start.tv_usec / 1000);
+	data->start_time = gettime(MILLISECOND);
 	//data->start_time = 0;
 	data->philo = (t_philo **)ft_calloc(ft_atoi(argv[1]), sizeof(t_philo *));
 	return data;
