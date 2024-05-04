@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:07:15 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/05/03 18:47:24 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/05/04 13:28:16 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,20 @@ size_t get_time(void)
 	time = (size_t) (rn.tv_sec * 1000 + rn.tv_usec / 1000);
 	return time;
 }
+long	thinking(t_philo *philo)
+{
+	long	t_eat;
+	long	t_sleep;
+	long	t_think;
+
+	t_eat = philo->time_to_eat;
+	t_sleep = philo->time_to_sleep;
+	t_think = (t_eat * 2) - t_sleep;
+	if (t_think < 0)
+		t_think = 0;
+	return(t_think * 0.42);
+}
+
 int is_odd(t_philo *philo)
 {
 	if (philo->num_of_philos % 2 != 0)
@@ -40,6 +54,7 @@ int is_odd(t_philo *philo)
 }
 void put_message(int state,t_philo *philo)
 {
+	//TODO impleemtn bool for running
 	/*
 		*1 is fork
 		*2 is dead
@@ -49,22 +64,22 @@ void put_message(int state,t_philo *philo)
 	*/
 	// increment number of meals
 	if (state == 1)
-	{
 		printf("%zu %d has taken a fork\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
-	}
 	if (state == 2)
 	{
 		philo->state = 2;
 		printf("%zu %d died\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
+		*philo->running = false;
 		return;
 	}
 	if (state == 3)
 	{
 		philo->state = 3;
+		printf("i am philo %d\n", philo->id);
+		philo->time_of_last_meal = gettime(MILLISECOND) - philo->time_on_start;
+		printf("this is my new time of last meal %zu\n", philo->time_of_last_meal);
 		printf("%zu %d is eating\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
 		usleep(philo->time_to_eat * 1000);
-		philo->time_of_last_meal = gettime(MILLISECOND) - philo->time_on_start;
-		printf("time of last meal : %ld\n", philo->time_of_last_meal);
 		pthread_mutex_unlock(philo->l_fork);
 		pthread_mutex_unlock(philo->r_fork);
 	}
@@ -72,39 +87,39 @@ void put_message(int state,t_philo *philo)
 		{
 			philo->state = 4;
 			printf("%zu %d is sleeping\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
+			//printf("I am philo %d and this is my time to sleep %d\n", philo->id, philo->time_to_sleep);
 			usleep(philo->time_to_sleep * 1000);
 		}
 	if (state == 5)
 	{
 		philo->state = 5;
 		printf("%zu %d is thinking\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
-		usleep(1000);
+		usleep(philo->time_to_think * 1000);
 	}
-	fflush(stdout);
 }
 void routine(t_philo *philo)
 {
-	while ()
+	while (*philo->running)
 	{
-		fflush(stdout);
 		pthread_mutex_lock(philo->r_fork);
 		put_message(1, philo);
 		pthread_mutex_lock(philo->l_fork);
 		put_message(1, philo);
-		put_message(3, philo);
-		if (philo->state == 3)
+		if (philo->state == 5)
+			put_message(3, philo);
+		if (philo->state == 3)			
 			put_message(4, philo);
-		if (philo->state == 4)
-			put_message(5, philo);
+		put_message(5, philo);
 	}
 }
 void 	godricks_hat(void *philo_ptr)
 {
 	t_philo *philo;
-	
-	philo = (t_philo *)philo_ptr;
+
+	philo = (t_philo *)philo_ptr; 
 	if (is_odd(philo))
 	{
+		printf("odd\n");
 		//implement later
 			if (philo->id % 2 != 0)
 				routine(philo);	
@@ -119,8 +134,8 @@ void 	godricks_hat(void *philo_ptr)
 	{
 		if (philo->id % 2 != 0)
 		{
-			put_message(5, philo);
-			usleep(philo->time_to_sleep * 1000);
+			printf("%zu %d is thinking\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
+			usleep(philo->time_to_think );
 		}
 		routine(philo);
 	}
@@ -136,14 +151,14 @@ void hello_darkness(void *data_ptr)
 	data = (t_data *)data_ptr;
 	philo_arr = data->philo;
 	num_of_philos = philo_arr[1]->num_of_philos;
-	while (1)
+	while (data->running)
 	{
-		elapsed_time = gettime(MILLISECOND)- philo_arr[i]->time_on_start;
+		elapsed_time = gettime(MILLISECOND)- philo_arr[i]->time_on_start - philo_arr[i]->time_of_last_meal;
+		//printf("elapsed time %lu\n", gettime(MILLISECOND) - philo_arr[i]->time_on_start);
+		//printf(" I am philo %d and this is my time of last meal %zu\n", philo_arr[i]->id, philo_arr[i]->time_of_last_meal);
+		//printf("time to die %d\n", philo_arr[i]->time_to_die);
 		if (elapsed_time > philo_arr[i]->time_to_die)
-		{
 			put_message(2, philo_arr[i]);
-			break;
-		}
 		i++;
 		if (i > num_of_philos)
 			i = 1;
@@ -179,11 +194,12 @@ void init_philos(char **argv, t_data	*data)
 		data->philo[i]->num_of_meals = 0;
 		data->philo[i]->state = 5;
 		init_forks(data, i);
-		data->philo[i]->dead_lock = &data->dead_lock;
-		data->philo[i]->meal_lock = &data->meal_lock;
-		data->philo[i]->write_lock = &data->write_lock;
+		data->philo[i]->running = &data->running;
 	}
 	data->philo[1]->l_fork = data->philo[ft_atoi(argv[1]) - 1]->r_fork;
 	pthread_mutex_init(data->philo[1]->l_fork, NULL);
+	i =0;
+	while (++i <= num_of_philos)
+		data->philo[i]->time_to_think = thinking(data->philo[i]);
 	philosophise(data);
 }

@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:55:59 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/05/03 16:04:21 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/05/04 09:47:04 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_data 	*init_data(char **argv)
 
 	
 	data = (t_data *)ft_calloc(1, sizeof(t_data));
-	
+	data->running = true;
 	pthread_mutex_init(&data->dead_lock, NULL);
 	pthread_mutex_init(&data->meal_lock, NULL);
 	pthread_mutex_init(&data->write_lock, NULL);

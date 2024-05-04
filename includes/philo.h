@@ -7,6 +7,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <stdbool.h>
 
 typedef enum e_time_code
 {
@@ -39,14 +40,15 @@ typedef struct s_philo
 	int state;
 	pthread_mutex_t *l_fork;
 	pthread_mutex_t *r_fork;
-	pthread_mutex_t	*dead_lock;
-	pthread_mutex_t	*meal_lock;
-	pthread_mutex_t	*write_lock;
+	bool *running;
 }				t_philo;
+
 
 typedef struct s_data
 {
+	bool running;
 	pthread_t anubis;
+	int index_cause_im_a_fool;
 	size_t start_time;	
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	meal_lock;
