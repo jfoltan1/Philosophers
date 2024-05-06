@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:08:57 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/05/04 13:51:33 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/05/06 18:24:57 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	if (argc == 1)
 		{
 			fake_argv[1] = ft_itoa(4); // 4 310 200 100
-			fake_argv[2] = ft_itoa(200);
+			fake_argv[2] = ft_itoa(410);
 			fake_argv[3] = ft_itoa(200);
 			fake_argv[4] = ft_itoa(200);
 			fake_argv[5] = ft_itoa(6);
