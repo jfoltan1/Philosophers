@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/17 16:42:37 by jfoltan           #+#    #+#             */
+/*   Updated: 2024/06/17 18:27:34 by jfoltan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-static void goodbye(t_table *table)
+static void	goodbye(t_table *table)
 {
 	t_philo	*philo;
 	int		i;
@@ -17,27 +29,24 @@ static void goodbye(t_table *table)
 	free(table->philos);
 }
 
-
-int main (int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_table table;
+	t_table	table;
+
 	if (args_check(argc))
-		{
-			parse_input(&table,argv);
-			set_the_table(&table);
-			philosophise(&table);
-			goodbye(&table);
-		}
+	{
+		parse_input(&table, argv);
+		set_the_table(&table);
+		philosophise(&table);
+		goodbye(&table);
+	}
 	else
 		exit_error("Error: Wrong arguments!\n");
 }
 
 /*
 TODO:
-go trough code and check everything that isnt clear, make notes na learn them. 
-checks other TODOs
-norm
+checks other TODOs:
+memory leaks
 eval sheet
-done. 
-
 */

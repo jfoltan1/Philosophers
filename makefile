@@ -1,32 +1,41 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/06/17 17:59:47 by jfoltan           #+#    #+#              #
+#    Updated: 2024/06/17 18:24:28 by jfoltan          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = philo
 CC = cc
-NORM = norminette
-CFLAGS = -g -Wall -Wextra -Werror -pthread
+CFLAGS = -g -O0 -Wall -Wextra -Werror -pthread
 RM = rm -rf
 OBJS_DIR = objs/
 SRCS_DIR = srcs/
+INCLUDES_DIR = includes/
 
-//SRCS = $(addprefix $(SRCS_DIR), $(wildcard *.c))
 SRCS = $(wildcard $(SRCS_DIR)*.c)
-OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
+OBJS = $(SRCS:$(SRCS_DIR)%.c=$(OBJS_DIR)%.o)
 
-all : $(OBJS_DIR) $(NAME)
+all: $(NAME)
 
-$(OBJS_DIR) :
-	mkdir -p $(OBJS_DIR)
-
-$(OBJS_DIR)%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(NAME) : $(OBJS)
+$(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@
 
-re : fclean all
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c
+	mkdir -p $(@D)
+	$(CC) $(CFLAGS) -I$(INCLUDES_DIR) -c $< -o $@
 
-clean :
+clean:
 	$(RM) $(OBJS_DIR)
 
-fclean : clean
+fclean: clean
 	$(RM) $(NAME)
 
-.PHONY : clean fclean re all bonus
+re: fclean all
+
+.PHONY: all clean fclean re
