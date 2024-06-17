@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 18:07:15 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/05/06 18:49:19 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/05/04 13:28:16 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ void put_message(int state,t_philo *philo)
 	*/
 	// increment number of meals
 	if (state == 1)
-		printf("%zu %d has taken a left fork\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
-	if (state == 1.5)
-		printf("%zu %d has taken a right fork\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
-
+		printf("%zu %d has taken a fork\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
 	if (state == 2)
 	{
 		philo->state = 2;
@@ -77,12 +74,10 @@ void put_message(int state,t_philo *philo)
 	}
 	if (state == 3)
 	{
-		pthread_mutex_lock(philo->r_fork);
-		put_message(1.5, philo);
-		pthread_mutex_lock(philo->l_fork);
-		put_message(1, philo);
 		philo->state = 3;
+		printf("i am philo %d\n", philo->id);
 		philo->time_of_last_meal = gettime(MILLISECOND) - philo->time_on_start;
+		printf("this is my new time of last meal %zu\n", philo->time_of_last_meal);
 		printf("%zu %d is eating\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
 		usleep(philo->time_to_eat * 1000);
 		pthread_mutex_unlock(philo->l_fork);
@@ -99,25 +94,23 @@ void put_message(int state,t_philo *philo)
 	{
 		philo->state = 5;
 		printf("%zu %d is thinking\n", gettime(MILLISECOND) - philo->time_on_start, philo->id);
-		printf("I am philo %d and this is my time to think %d\n", philo->id, philo->time_to_think);	
-		usleep(philo->time_to_think);
+		usleep(philo->time_to_think * 1000);
 	}
 }
-static void *routine(t_philo *philo)
+void routine(t_philo *philo)
 {
 	while (*philo->running)
 	{
-		//pthread_mutex_lock(philo->r_fork);
-		//put_message(1, philo);
-		//pthread_mutex_lock(philo->l_fork);
-		//put_message(1, philo);
-		//if (philo->state == 5)
+		pthread_mutex_lock(philo->r_fork);
+		put_message(1, philo);
+		pthread_mutex_lock(philo->l_fork);
+		put_message(1, philo);
+		if (philo->state == 5)
 			put_message(3, philo);
-		//if (philo->state == 3)			
+		if (philo->state == 3)			
 			put_message(4, philo);
 		put_message(5, philo);
 	}
-	return(NULL);
 }
 void 	godricks_hat(void *philo_ptr)
 {

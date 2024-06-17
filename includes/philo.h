@@ -62,7 +62,7 @@ t_data 	*init_data(char **argv);
 pthread_t	create_thread(void);
 void init_philos(char **argv, t_data	*data);
 //ROUTINE
-
+void routine(t_philo *philo);
 // UTILS
 int	check_args(int argc, char **argv);
 long	gettime(int time_code);
