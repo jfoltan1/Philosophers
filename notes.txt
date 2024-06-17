@@ -1,6 +1,0 @@
-first steps:
-interpret arguments - CHECK
-create philosophers, one thread at a time- CHECK
-make them sleep think until x amount of times 
- 
-mutex is fordata races, its for having 
