@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 16:37:07 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/06/17 17:56:03 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/06/29 18:27:27 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,14 @@ void	*dinner_simulation(void *data)
 	godricks_hat(philo);
 	while (!simulation_finish(philo->table))
 	{
-		if (philo->is_full)
+		if (get_bool(&philo->table->table_mutex,
+				&philo->table->ready_for_anubis) == false && 
+			all_threads_ready(&philo->table->table_mutex,
+				&philo->table->nbr_of_threads_running,
+				philo->table->num_of_philos) == true)
+			set_bool(&philo->table->table_mutex,
+				&philo->table->ready_for_anubis, true);
+		if (get_bool(&philo->philo_mutex, &philo->is_full) == true)
 			break ;
 		eat(philo);
 		write_status(SLEEPING, philo);
@@ -79,6 +86,7 @@ static void	*darwinism(void *data)
 		gettime(MILISECONDS));
 	increase_long(&philo->table->table_mutex,
 		&philo->table->nbr_of_threads_running);
+	set_bool(&philo->table->table_mutex, &philo->table->ready_for_anubis, true);
 	write_status(FIRST_FORK, philo);
 	while (!simulation_finish(philo->table))
 		usleep(200);
@@ -105,6 +113,6 @@ void	philosophise(t_table *table)
 	i = -1;
 	while (++i < table->num_of_philos)
 		safe_thread_handle(&table->philos[i].thread_id, NULL, JOIN, NULL);
-	set_bool(&table->table_mutex, &table->end_of_simulation, true);
 	safe_thread_handle(&table->anubis, NULL, JOIN, NULL);
+	set_bool(&table->table_mutex, &table->end_of_simulation, true);
 }

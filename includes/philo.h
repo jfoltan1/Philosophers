@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:12:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/06/17 18:26:02 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/06/29 16:45:15 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_philo
 	t_fork		*second_fork;
 	pthread_t	thread_id;
 	t_table		*table;
-	t_mutex		philo_mutex; /*needed for races with monitor*/
+	t_mutex		philo_mutex; 
 }	t_philo;
 
 typedef struct s_table
@@ -76,6 +76,7 @@ typedef struct s_table
 	long		start_time;
 	long		nbr_of_threads_running;
 	bool		end_of_simulation;
+	bool		ready_for_anubis;
 	bool		its_go_time;
 	pthread_t	anubis;
 	t_mutex		table_mutex;

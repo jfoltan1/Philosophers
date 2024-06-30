@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 16:42:37 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/06/21 22:08:05 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/06/21 21:51:17 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	goodbye(t_table *table)
 int	main(int argc, char **argv)
 {
 	t_table	table;
-	
+
 	if (args_check(argc))
 	{
 		parse_input(&table, argv);
