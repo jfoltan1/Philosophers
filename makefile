@@ -6,13 +6,13 @@
 #    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/17 17:59:47 by jfoltan           #+#    #+#              #
-#    Updated: 2024/06/21 22:08:33 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/06/29 16:49:18 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS =   -Wall -Wextra -Werror
+CFLAGS =  -Wall -Wextra -Werror -pthread -fsanitize=thread
 RM = rm -rf
 OBJS_DIR = objs/
 SRCS_DIR = srcs/

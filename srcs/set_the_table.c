@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 16:57:59 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/06/17 17:57:09 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/06/29 16:38:37 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	set_the_table(t_table *table)
 	int	i;
 
 	i = -1;
+	table->ready_for_anubis = false;
 	table->its_go_time = false;
 	table->end_of_simulation = false;
 	table->philos = my_calloc(sizeof(t_philo) * table->num_of_philos);

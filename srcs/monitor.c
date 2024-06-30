@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 16:44:13 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/06/17 17:56:58 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/06/29 17:04:25 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	*hello_darkness(void *data)
 	int		i;
 
 	table = (t_table *)data;
-	while (!all_threads_ready(&table->table_mutex,
-			&table->nbr_of_threads_running, table->num_of_philos));
-	while (!simulation_finish(table))
+	while (!get_bool(&table->table_mutex, &table->ready_for_anubis))
+		;
+	while (simulation_finish(table) == false)
 	{
 		i = -1;
 		while (++i < table->num_of_philos && !simulation_finish(table))
