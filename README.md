@@ -23,6 +23,7 @@ A simulation of the classic dining philosophers problem, implemented in C to exp
 2. **Execute the Simulation**:
    ```bash
    ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+   * Example: "./philo 5 800 200 200 5"
    ```
    - `number_of_philosophers`: Total number of philosophers (and forks).
    - `time_to_die`: Time (in milliseconds) a philosopher can remain without eating before dying.
